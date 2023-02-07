@@ -1,0 +1,26 @@
+1. IP Range - 215.157.183.0
+2. Commands
+	1. `nmap -sn x.x.x.100-125 -oA ping_scan`
+		1. Output is saved to 3 files (`.gnmap`, `.nmap`, `.xml`)
+	2. `cat ping_scan.gnmap | awk '{print $2} | grep -v ^'Nmap' >> IPs.txt`
+		1. Extracts all the IP addresses from the `.gnmap` file and puts them in a `.txt` file
+	2. `nmap -iL IPs.txt -sS -oA syn_scan`
+		
+		1. Performs a simply SYN scan (half-open scan) for each host in `IPs.txt`
+	2. `nmap -iL IPs.txt -sV -oA service_scan`
+		1. Scans for services running on each open port for each host in `IPs.txt`
+	2. `sudo nmap -iL IPs.txt -O -oA os_scan`
+		1. Scans for the OS of each host in `IPs.txt`
+	3. | **Host**        | **Open Ports**                                               | **Services**                                                 | **OS guess (1)**                     | **OS guess (1) reason**                                      | **OS guess (2)** | **OS guess (2) reason**                                      | **OS**                                        |
+	   | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------ | --------------------------------------------- |
+	   | 215.157.183.100 | 135<br />139<br />445                                        | msrpc<br />netbios-ssn<br />microsoft-ds                     | Windows                              | msrpc and microsoft-ds are both Microsoft software           | Windows XP       | microsoft-ds is now reported as Windows XP microsoft-ds      | Windows XP SP2 or SP3, or Windows Server 2003 |
+	   | 215.157.183.102 | 7<br />9<br />13<br />17<br />19<br />80<br />135<br />139<br />445<br />515<br />2179<br />8088 | echo<br />discard<br />daytime<br />qotd<br />chargen<br />http<br />msrpc<br />netbios-ssn<br />microsoft-ds<br />printer<br />vmrdp<br />radan-http | BSD                                  | printer (assuming Line Printer Daemon) is used on BSD (Linux seems to use CUPS) | Windows 7 or 10  | Many of the services are now being reported as Windows services and microsoft-ds is being reported as Windows 7 - 10 microsoft-ds | Windows 10 1507 - 1607                        |
+	   | 215.157.183.104 | 22<br />80<br />443                                          | ssh<br />http<br />https                                     | Idk                                  | Any OS can run these services                                | Ubuntu           | The services are now being reports as Ubuntu services specifically | Linux 2.6.32 - 3.10                           |
+	   | 215.157.183.106 | 80<br />135<br />139<br />445                                | http<br />msrpc<br />netbios-ssn<br />microsoft-ds           | Windows                              | msrpc and microsoft-ds are both Microsoft software           | FreeBSD          | The services are reported as FreeBSD services                | FreeBSD 6.3 \| JUNOS 10.4 - 12.1              |
+	   | 215.157.183.108 | 135<br />139<br />445                                        | msrpc<br />netbios-ssn<br />microsoft-ds                     | Windows                              | msrpc and microsoft-ds are both Microsoft software           | Windows 7 or 10  | Many of the services are now being reported as Windows services and microsoft-ds is being reported as Windows 7 - 10 microsoft-ds | Windows 10 1507 - 1607                        |
+	   | 215.157.183.111 | 135<br />139<br />445<br />3389<br />5357                    | msrpc<br />netbios-ssn<br />microsoft-ds<br />ms-wbt-server<br />wsdapi | Windows Vista or Windows Server 2008 | wsdapi is used for services that run on those two OS's       | Windows 7 or 10  | Many of the services are now being reported as Windows services and microsoft-ds is being reported as Windows 7 - 10 microsoft-ds | Windows 10 1703                               |
+	   | 215.157.183.121 | 22<br />80                                                   | ssh<br />http                                                | Idk                                  | Any OS can run these services                                | Ubuntu           | The services are now being reports as Ubuntu services specifically | Linux 4.15 - 5.6                              |
+	   | 215.157.183.122 | 22<br />8089                                                 | ssh<br />unknown                                             | Idk                                  | Any OS can run these services                                | Ubuntu           | The services are now being reports as Ubuntu services specifically | Linux 4.15 - 5.6                              |
+	   | 215.157.183.123 | 22<br />10000                                                | ssh<br />snet-sensor-mgmt                                    | Unix-based                           | port 10000 may actually have webmin running which is used for Unix | Ubuntu           | The services are now being reports as Ubuntu services specificallyUnix-based | Linux 4.15 - 5.6                              |
+	
+	   
