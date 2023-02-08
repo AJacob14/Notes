@@ -11,5 +11,12 @@
 		3. Use
 	4. Scoping
 		1. Static
+			1. Search order
+				1. Current block
+				2. Surrounding blocks
+				3. Global variables
+			4. Rules
+				1. Current definitions shadow previous definitions till the end of their scope
 		2. Dynamic
+			1. 
 	5. 
